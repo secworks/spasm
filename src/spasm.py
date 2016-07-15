@@ -49,12 +49,59 @@ import argparse
 #-------------------------------------------------------------------
 # Defines.
 #-------------------------------------------------------------------
+m6510_defines = "cpu_defines/m6510_defines.txt"
+
+
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+def scan_source(source, verbose):
+    linenum = 1
+    lines = []
+
+    if verbose:
+        print("Scanning file %s" % source)
+
+    with open(source) as src_file:
+        for line in src_file:
+            if not line.isspace() and not line[0:2] == "//":
+                lines.append((linenum, line))
+            linenum += 1
+
+    if verbose:
+        print("Number of source lines scanned: %d" % (linenum - 1))
+
+    return lines
+
+
+
+#-------------------------------------------------------------------
+#-------------------------------------------------------------------
+def load_opcode_db(opcode_source, verbose):
+    linenum = 1
+    lines = []
+
+    if verbose:
+        print("Loading opcodes from file %s" % opcode_source)
+
+    with open(opcode_source) as opcode_file:
+        for line in opcode_file:
+            if not line.isspace() and not line[0:2] == "//":
+                print(line.split("  "))
+            linenum += 1
+
+    if verbose:
+        print("Number of opcode source lines scanned: %d" % (linenum - 1))
+        print("opcodes:", lines)
+    return lines
 
 
 #-------------------------------------------------------------------
 #-------------------------------------------------------------------
 def assemble(source, dest, verbose=False):
-    pass
+    opcode_db = load_opcode_db(m6510_defines, verbose)
+#    source_lines = scan_source(source, verbose)
+#    print source_lines
+
 
 #-------------------------------------------------------------------
 # main()
@@ -68,11 +115,16 @@ def main():
                                      object code for the specified architecture.')
     parser.add_argument("source", help = 'The source file.')
     parser.add_argument("dest", help = 'The destination file.')
-    parser.add_argument('--verbose', action="store_true", default=False)
-    parser.add_argument('--version', action='version',
+    parser.add_argument('-v', '--verbose', action="store_true", default=False)
+    parser.add_argument('-V', '--version', action='version',
                         version='%(prog)s {version}'.format(version=__version__))
     args = parser.parse_args()
-    assmble(source, dest, verbose)
+
+    if not os.path.isfile(args.source):
+        print("Source file %s does not exist." % args.source)
+        return(1)
+
+    assemble(args.source, args.dest, args.verbose)
 
 
 #-------------------------------------------------------------------
