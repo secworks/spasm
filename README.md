@@ -19,10 +19,18 @@ The assembler supports a set of commands prefixed as follows:
 
 
 ## Implementation ##
-Written in standard Python3 without any third party modules.
+The assembler is written in standard Python3 with (so far) only one
+third party module - [PyYAML](http://pyyaml.org/). The assembler uses
+YAML to specify opcodes in a structured way.
 
 
 ## Status ##
+
+**(2016-08-12)**
+Decided on trying to use YAML as the basis for opcode specification
+instead of writing my own parser. This however adds an external
+dependency.
+
 
 **(2016-07-15)**
 A lot in my head, not much yet in the repo.
