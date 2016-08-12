@@ -10,12 +10,13 @@ be possible to generate objects for any CPU with the correct CPU
 plug-in. But at the moment it is more pathetic.
 
 The assembler supports a set of commands prefixed as follows:
-  Comments: "// comment". Rows beginning with comment prefix are ignored.
-  Includes: ".include filename"
-  Defines:  ".define screen = 0x0400"
-  Scripts:  ".script filename"
-  Data:     ".data 0x00, 0x10, 0x20, 0x40, 0xde, 0xad"
-  Address:  ".addr 0x1000". Base for object generated.
+- Comments: "// comment". Rows beginning with comment prefix are ignored.
+- Includes: ".include filename". The contents is copied verbatim.
+- Defines:  ".define screen = 0x0400"
+- Scripts:  ".script filename". The script is executed and the result is
+  included at the point of call.
+- Data:     ".data 0x00, 0x10, 0x20, 0x40, 0xde, 0xad"
+- Address:  ".addr 0x1000". Base for object generated.
 
 
 ## Implementation ##
