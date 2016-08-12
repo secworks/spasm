@@ -1,14 +1,32 @@
-// Definition file for MOS 6510 opcodes
-// Used to parse the assembler files.
+//======================================================================
+//
+// m6510_defines.txt
+// -----------------
+// Definition file for MOS 6510 instructions. Used to parse
+// assembler code source files.
+//
 // The format is:
-// opcode string used to detect the specific opcode
+// Opcode used to detect the specific opcode
+// Possible operator selector prefix
+// Possible operator selector suffix
 // Hexadecimal value for the opcode
 // The number of bytes for the instruction including arguments
-// A string description
+// Instruction description
+//
+//======================================================================
 
-"clc"            0x18           1            "Clear carry."
-"cmp #$"         0xc9           2            "Compare with immediate value."
-"iny"            0xc8           1            "Increase Y register."
-"lda #$"         0xa9           2            "Load Accumulator with immediate value."
-"ldy #$"         0xa0           2            "Load Y register with immediate value."
-"rts"            0x60           1            "Return from Subroutine."
+clc                  0x18     1     // Clear carry
+cmp     #$           0xc9     2     // Compare with immediate value
+
+iny                  0xc8     1     // Increase Y register
+
+lda     #$           0xa9     2     // Load Accumulator with immediate value
+lda     $      y     0x00     3     // Load Accumulator from absolute address with Y index
+
+ldy     #$           0xa0     2     // Load Y register with immediate value
+
+rts                  0x60     1     // Return from Subroutine
+
+//======================================================================
+// EOF m6510_defines.txt
+//======================================================================

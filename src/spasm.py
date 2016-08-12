@@ -79,6 +79,7 @@ def scan_source(source, verbose):
 def load_opcode_db(opcode_source, verbose):
     linenum = 1
     lines = []
+    opcodes = []
 
     if verbose:
         print("Loading opcodes from file %s" % opcode_source)
@@ -86,13 +87,26 @@ def load_opcode_db(opcode_source, verbose):
     with open(opcode_source) as opcode_file:
         for line in opcode_file:
             if not line.isspace() and not line[0:2] == "//":
-                print(line.split("  "))
+                opcode_line = line.split()
+                if opcode_line[3] == "//":
+                    instruction = (opcode_line[0], "_", "_",
+                                   opcode_line[1], opcode_line[2], opcode_line[3:])
+
+                if opcode_line[4] == "//":
+                    instruction = (opcode_line[0], opcode_line[1], "_",
+                                   opcode_line[2], opcode_line[3], opcode_line[4:])
+
+                if opcode_line[5] == "//":
+                    instruction = (opcode_line[0], opcode_line[1], opcode_line[2],
+                                   opcode_line[3], opcode_line[4], opcode_line[5:])
+
+                opcodes.append(instruction)
             linenum += 1
 
     if verbose:
         print("Number of opcode source lines scanned: %d" % (linenum - 1))
-        print("opcodes:", lines)
-    return lines
+        print("Number of opcodes loaded: %d" % len(opcodes))
+    return opcodes
 
 
 #-------------------------------------------------------------------
