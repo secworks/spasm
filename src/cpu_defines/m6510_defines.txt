@@ -1,32 +1,57 @@
-//======================================================================
-//
-// m6510_defines.txt
-// -----------------
-// Definition file for MOS 6510 instructions. Used to parse
-// assembler code source files.
-//
-// The format is:
-// Opcode used to detect the specific opcode
-// Possible operator selector prefix
-// Possible operator selector suffix
-// Hexadecimal value for the opcode
-// The number of bytes for the instruction including arguments
-// Instruction description
-//
+# ======================================================================
+#
+# m6510_defines.txt
+# -----------------
+# Definition file for the MOS 6510 cpu instruction set. The file is
+# Used to parse assembler source code files in spasm.
+#
 //======================================================================
 
-clc                  0x18     1     // Clear carry
-cmp     #$           0xc9     2     // Compare with immediate value
+cpu: mos_6510
+endian: little
 
-iny                  0xc8     1     // Increase Y register
+instruction: clear_carry
+mnemonic: clc
+operand:  None
+opcode:   0x18
+bytes:    1
 
-lda     #$           0xa9     2     // Load Accumulator with immediate value
-lda     $      y     0x00     3     // Load Accumulator from absolute address with Y index
+instruction: compare_immediate
+mnemonic: cmp
+operand:  #$XX
+opcode:   0xc9
+bytes:    2
 
-ldy     #$           0xa0     2     // Load Y register with immediate value
+instruction: incrase_yreg
+mnemonic: iny
+operand:  None
+opcode:   0xc8
+bytes:    1
 
-rts                  0x60     1     // Return from Subroutine
+instruction: load_accumulator_immediate
+mnemonic: lda
+operand:  #$XX
+opcode:   0xa9
+bytes:    2
 
-//======================================================================
-// EOF m6510_defines.txt
-//======================================================================
+instruction: load_accumulator_absolute_with_y_reg
+mnemonic: lda
+operand:  $XXXX,y
+opcode:   0x3c
+bytes:    3
+
+instruction: stora_accumulator_to_absolute_address
+mnemonic: sta
+operand:  $XXXX
+opcode:   0x8d
+bytes:    3
+
+instruction: return_from_subroutine
+mnemonic: rts
+operand:  None
+opcode:   0x60
+bytes:    1
+
+#======================================================================
+# EOF m6510_defines.txt
+#======================================================================
