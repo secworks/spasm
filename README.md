@@ -27,6 +27,11 @@ YAML to specify opcodes in a structured way.
 
 ## Status ##
 
+**(2016-08-13)**
+Decided on not using YAML after all. We can define a very simple
+defintion language and create a parser without much hassle. The language
+is very much like YAML though.
+
 **(2016-08-12)**
 Decided on trying to use YAML as the basis for opcode specification
 instead of writing my own parser. This however adds an external
