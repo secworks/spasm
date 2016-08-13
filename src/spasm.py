@@ -45,6 +45,8 @@ import sys
 import os
 import argparse
 
+from spasm_cpu import CPU
+
 
 #-------------------------------------------------------------------
 # Defines.
@@ -112,6 +114,8 @@ def load_opcode_db(opcode_source, verbose):
 #-------------------------------------------------------------------
 #-------------------------------------------------------------------
 def assemble(source, dest, verbose=False):
+    my_cpu = CPU()
+
     opcode_db = load_opcode_db(m6510_defines, verbose)
 #    source_lines = scan_source(source, verbose)
 #    print source_lines
@@ -151,5 +155,5 @@ if __name__=="__main__":
     sys.exit(main())
 
 #=======================================================================
-# EOF dpa.py
+# EOF spasm.py
 #=======================================================================
