@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #=======================================================================
 #
@@ -52,15 +52,44 @@ import os
 # CPU()
 #-------------------------------------------------------------------
 class CPU:
-    def __init__(self):
+    def __init__(self, verbose = False):
+        self.verbose = verbose
         self.cpu_name = ""
         self.endianess = ""
+        self.num_instructions = 0
         self.instruction_set = {}
 
 
     def load_cpu_definition(self, filename):
-        pass
+        with open(filename, 'rb') as source:
+            for line in source:
+                if self.verbose:
+                    print(line)
+                if "cpu_name" in line:
+                    self.cpu_name = line.split(':')[1]
+                    if self.verbose:
+                        print("cpu_name: ", self.cpu_name)
 
+
+#-------------------------------------------------------------------
+# test_cpu()
+#
+# Loads a known cpu definition and print the resulting cpu.
+#-------------------------------------------------------------------
+def test_cpu():
+    my_cpu = CPU(True)
+    my_cpu.load_cpu_definition("cpu_defines/m6510_defines.txt")
+    print(my_cpu)
+
+
+#-------------------------------------------------------------------
+# __name__
+# Python thingy which allows the file to be run standalone as
+# well as parsed from within a Python interpreter.
+#-------------------------------------------------------------------
+if __name__=="__main__":
+    # Run the main function.
+    sys.exit(test_cpu())
 
 #=======================================================================
 # EOF spasm_cpu.py
