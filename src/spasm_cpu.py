@@ -61,15 +61,48 @@ class CPU:
 
 
     def load_cpu_definition(self, filename):
-        with open(filename, 'rb') as source:
-            for line in source:
-                if self.verbose:
-                    print(line)
-                if "cpu_name" in line:
-                    self.cpu_name = line.split(':')[1]
-                    if self.verbose:
-                        print("cpu_name: ", self.cpu_name)
+        first_instruction = True
+        instr_name = ""
+        instr_mne = ""
+        instr_opcode = 0
+        instr_operand = ""
+        instr_bytes = 0
+        fields = []
 
+        with open(filename, 'r') as source:
+            for line in source:
+                if "#" not in line and len(line) > 1:
+                    fields.append([x.strip() for x in line.split(':')])
+
+        for field in fields:
+            if "cpu" in field[0]:
+                self.cpu_name = field[1]
+
+            if "endian" in field[0]:
+                self.endianess = field[1]
+
+            if "instruction" in field[0]:
+                if not first_instruction:
+                    self.instruction_set[instr_name] =\
+                      (instr_mne, instr_opcode, instr_operand, instr_bytes)
+                instr_name = field[1]
+                first_instruction = False
+
+            if "mnemonic" in field[0]:
+                instr_mne = field[1]
+
+            if "operand" in field[0]:
+                instr_operand = field[1]
+
+            if "opcode" in field[0]:
+                instr_opcode = int(field[1], 16)
+
+            if "bytes" in field[0]:
+                instr_bytes = int(field[1])
+
+        # Add the final instruction.
+        self.instruction_set[instr_name] =\
+          (instr_mne, instr_opcode, instr_operand, instr_bytes)
 
 #-------------------------------------------------------------------
 # test_cpu()
@@ -79,7 +112,10 @@ class CPU:
 def test_cpu():
     my_cpu = CPU(True)
     my_cpu.load_cpu_definition("cpu_defines/m6510_defines.txt")
-    print(my_cpu)
+    print("cpu_name: %s" % my_cpu.cpu_name)
+    print("cpu endianess: %s" % my_cpu.endianess)
+    print("Num instructions: %d" % len(my_cpu.instruction_set))
+    print("instruction set: ", my_cpu.instruction_set)
 
 
 #-------------------------------------------------------------------
