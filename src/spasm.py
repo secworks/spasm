@@ -75,50 +75,14 @@ def scan_source(source, verbose):
     return lines
 
 
-
 #-------------------------------------------------------------------
-#-------------------------------------------------------------------
-def load_opcode_db(opcode_source, verbose):
-    linenum = 1
-    lines = []
-    opcodes = []
-
-    if verbose:
-        print("Loading opcodes from file %s" % opcode_source)
-
-    with open(opcode_source) as opcode_file:
-        for line in opcode_file:
-            if not line.isspace() and not line[0:2] == "//":
-                opcode_line = line.split()
-                if opcode_line[3] == "//":
-                    instruction = (opcode_line[0], "_", "_",
-                                   opcode_line[1], opcode_line[2], opcode_line[3:])
-
-                if opcode_line[4] == "//":
-                    instruction = (opcode_line[0], opcode_line[1], "_",
-                                   opcode_line[2], opcode_line[3], opcode_line[4:])
-
-                if opcode_line[5] == "//":
-                    instruction = (opcode_line[0], opcode_line[1], opcode_line[2],
-                                   opcode_line[3], opcode_line[4], opcode_line[5:])
-
-                opcodes.append(instruction)
-            linenum += 1
-
-    if verbose:
-        print("Number of opcode source lines scanned: %d" % (linenum - 1))
-        print("Number of opcodes loaded: %d" % len(opcodes))
-    return opcodes
-
-
-#-------------------------------------------------------------------
+# assemble()
 #-------------------------------------------------------------------
 def assemble(source, dest, verbose=False):
     my_cpu = CPU()
-
-    opcode_db = load_opcode_db(m6510_defines, verbose)
-#    source_lines = scan_source(source, verbose)
-#    print source_lines
+    my_cpu.load_cpu_definition(m6510_defines)
+    source_lines = scan_source(source, verbose)
+    print(source_lines)
 
 
 #-------------------------------------------------------------------
